@@ -1,6 +1,6 @@
 import streamlit as st
 import networkx as nx
-
+from matplotlib import pyplot as plt
 # Función original (con la solución alternativa para shortest_cycle)
 def encontrar_ciclo_mas_corto(grafo, nodo):
     """Encuentra el ciclo más corto que comienza y termina en el nodo dado."""
