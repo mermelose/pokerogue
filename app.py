@@ -180,87 +180,19 @@ if st.button("Calcular Rutas", type="primary"):
                     st.code(res["camino"])
                     
                     # Visualización gráfica (opcional)
-                    with st.expander("🌍 Mapa de Ruta Detallado"):
-                        fig, ax = plt.subplots(figsize=(12, 10))
+                    with st.expander("Ver mapa de ruta"):
+                        fig, ax = plt.subplots(figsize=(10, 8))
+                        pos = nx.spring_layout(G, seed=42)
+                        nx.draw(G, pos, with_labels=True, ax=ax, node_size=300, font_size=6)
                         
-                        # 1. Configuración avanzada del layout
-                        pos = nx.spring_layout(
-                            G,
-                            seed=42,          # Para consistencia entre renders
-                            k=0.3,            # Distancia óptima entre nodos
-                            iterations=100,    # Más iteraciones = mejor organización
-                            scale=1.5         # Espacio general del gráfico
-                        )
-                        
-                        # 2. Dibujar elementos base con mejor estilo
-                        nx.draw_networkx_nodes(
-                            G, pos,
-                            node_color='#1f78b4',
-                            node_size=400,
-                            alpha=0.9,
-                            ax=ax
-                        )
-                        
-                        nx.draw_networkx_edges(
-                            G, pos,
-                            edge_color='#cccccc',
-                            width=1.5,
-                            alpha=0.6,
-                            ax=ax
-                        )
-                        
-                        nx.draw_networkx_labels(
-                            G, pos,
-                            font_size=8,
-                            font_family='sans-serif',
-                            font_weight='bold',
-                            ax=ax
-                        )
-                        
-                        # 3. Resaltado de ruta con mejor visibilidad
                         if "camino" in res:
                             camino_nodos = res["camino"].split(" → ")
                             edge_list = [(camino_nodos[i], camino_nodos[i+1]) for i in range(len(camino_nodos)-1)]
-                            
-                            # Resaltar edges del camino
-                            nx.draw_networkx_edges(
-                                G, pos,
-                                edgelist=edge_list,
-                                edge_color='#ff4500',  # Naranja-rojizo
-                                width=3,
-                                alpha=0.9,
-                                ax=ax
-                            )
-                            
-                            # Resaltar nodos del camino
-                            nx.draw_networkx_nodes(
-                                G, pos,
-                                nodelist=camino_nodos,
-                                node_color='#ff4500',
-                                node_size=600,
-                                edgecolors='black',
-                                linewidths=1.5,
-                                ax=ax
-                            )
-                            
-                            # Etiquetas más grandes para nodos del camino
-                            label_pos = {k: (v[0], v[1]+0.05) for k, v in pos.items() if k in camino_nodos}
-                            nx.draw_networkx_labels(
-                                G, label_pos,
-                                labels={n: n for n in camino_nodos},
-                                font_size=9,
-                                font_color='black',
-                                font_weight='bold',
-                                ax=ax
-                            )
-                        
-                        # 4. Mejoras estéticas finales
-                        ax.set_title("Red de Biomas con Ruta Destacada", pad=20)
-                        ax.margins(0.1)
-                        plt.axis('off')
-                        plt.tight_layout()
+                            nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color='r', width=2)
+                            nx.draw_networkx_nodes(G, pos, nodelist=camino_nodos, node_color='r', node_size=500)
                         
                         st.pyplot(fig)
+
 # Instrucciones
 with st.expander("ℹ️ Instrucciones"):
     st.markdown("""
