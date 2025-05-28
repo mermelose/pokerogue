@@ -201,7 +201,7 @@ if st.button("Calcular Ruta"):
             st.subheader("Visualización del Grafo")
             fig, ax = plt.subplots(figsize=(12, 8))
             pos = nx.spring_layout(G, seed=42)
-            nx.draw(G, pos, with_labels=True, ax=ax, node_size=500, font_size=8)
+            nx.draw(G, pos, with_labels=True, ax=ax, node_size=1000, font_size=8)
             
             # Resaltar el camino
             if len(camino) > 1:
