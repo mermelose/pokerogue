@@ -1,7 +1,4 @@
-
-
-import matplotlib.pyplot as plt
-
+from matplotlib import pyplot as plt
 import streamlit as st
 import networkx as nx
 
