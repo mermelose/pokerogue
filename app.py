@@ -181,16 +181,51 @@ if st.button("Calcular Rutas", type="primary"):
                    
                     # Visualización gráfica (opcional)
                     with st.expander("Ver mapa de ruta"):
-                        fig, ax = plt.subplots(figsize=(10, 8))
-                        pos = nx.spring_layout(G, seed=42)
+                        fig, ax = plt.subplots(figsize=(12, 10))  # Tamaño más grande para mejor visibilidad
+                        pos = {
+                            "Town": (0, 0),
+                            "Grassy Field": (1, 0),
+                            "Tall Grass": (2, 0),
+                            "Forest": (3, 0),
+                            "Meadow": (4, 0),
+                            "Plains": (1, -1),
+                            "Metropolis": (0, -1),
+                            "Slum": (0, -2),
+                            "Swamp": (1, -2),
+                            "Construction Site": (2, -2),
+                            "Power Plant": (3, -2),
+                            "Factory": (4, -2),
+                            "Laboratory": (5, -2),
+                            "Dojo": (2, -1),
+                            "Jungle": (3, 1),
+                            "Temple": (4, 1),
+                            "Desert": (5, 1),
+                            "Ancient Ruins": (6, 1),
+                            "Mountain": (7, 1),
+                            "Volcano": (8, 1),
+                            "Wasteland": (8, 0),
+                            "Space": (7, 2),
+                            "Fairy Cave": (5, 0),
+                            "Ice Cave": (6, 0),
+                            "Snowy Forest": (6, -1),
+                            "Lake": (3, -1),
+                            "Beach": (4, -1),
+                            "Sea": (5, -1),
+                            "Island": (6, -2),
+                            "Seabed": (7, -2),
+                            "Badlands": (8, -1),
+                            "Cave": (4, -3),
+                            "Graveyard": (2, -3.5),
+                            "Abyss": (3, -4),
+                        }
                         nx.draw(G, pos, with_labels=True, ax=ax, node_size=300, font_size=6)
-                       
+                    
                         if "camino" in res:
                             camino_nodos = res["camino"].split(" → ")
                             edge_list = [(camino_nodos[i], camino_nodos[i+1]) for i in range(len(camino_nodos)-1)]
                             nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color='r', width=2)
                             nx.draw_networkx_nodes(G, pos, nodelist=camino_nodos, node_color='r', node_size=500)
-                       
+                    
                         st.pyplot(fig)
 
 # Instrucciones
