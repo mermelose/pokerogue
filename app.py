@@ -19,11 +19,56 @@ def cargar_grafo():
     G.add_nodes_from(biomas)
     
     edges = [
-        # (Tus conexiones existentes aquí)
-        ("Town", "Plains"),
-        ("Plains", "Grassy Field"),
-        # ... (todas las demás conexiones)
-    ]
+    ("Town", "Plains"),
+    ("Plains", "Grassy Field"), ("Plains", "Lake"), ("Plains", "Metropolis"),
+    ("Grassy Field", "Tall Grass"),
+    ("Tall Grass", "Forest"),
+    ("Tall Grass", "Cave"),
+    ("Metropolis","Slum"),
+    ("Slum","Swamp"),
+    ("Slum","Construction Site"),
+    ("Construction Site","Power Plant"),
+    ("Construction Site","Dojo"),
+    ("Power Plant","Factory"),
+    ("Factory","Laboratory"),
+    ("Factory","Plains"),
+    ("Laboratory","Construction Site"),
+    ("Dojo","Jungle"),
+    ("Dojo","Temple"),
+    ("Dojo","Plains"),
+    ("Jungle","Temple"),
+    ("Temple","Swamp"),
+    ("Temple","Desert"),
+    ("Temple","Ancient Ruins"),
+    ("Desert","Ancient Ruins"),
+    ("Ancient Ruins","Mountain"),
+    ("Ancient Ruins","Forest"),
+    ("Mountain", "Volcano"),
+    ("Mountain", "Wasteland"),
+    ("Mountain", "Space"),
+    ("Volcano", "Beach"),
+    ("Volcano", "Badlands"),
+    ("Badlands", "Wasteland"),
+    ("Badlands", "Abyss"),
+    ("Beach", "Sea"),
+    ("Sea", "Island"),
+    ("Island", "Seabed"),
+    ("Seabed", "Fairy Cave"),
+    ("Fairy Cave", "Ice Cave"),
+    ("Ice Cave", "Snowy Forest"),
+    ("Snowy Forest", "Meadow"),
+    ("Meadow", "Forest"),
+    ("Forest", "Graveyard"),
+    ("Swamp", "Graveyard"),
+    ("Graveyard", "Abyss"),
+    ("Abyss", "Town"),
+    ("Cave", "Lake"),
+    ("Lake", "Meadow"),
+    ("Wasteland", "Badlands"),
+    ("Space", "Mountain")
+     ]
+
+# Añadir aristas al grafo
     G.add_edges_from(edges)
     return G, biomas
 
