@@ -9,15 +9,15 @@ st.set_page_config(layout="wide", page_title="Pokerogue - Multi-Ruta")
 def cargar_grafo():
     G = nx.DiGraph()
     biomas = [
-        "Dojo", "Jungle", "Temple", "Desert", "Ancient Ruins", "Space", 
-        "Fairy Cave", "Ice Cave", "Mountain", "Volcano", "Beach", "Sea", 
-        "Island", "Seabed", "Wasteland", "Badlands", "Cave", "Lake", 
+        "Dojo", "Jungle", "Temple", "Desert", "Ancient Ruins", "Space",
+        "Fairy Cave", "Ice Cave", "Mountain", "Volcano", "Beach", "Sea",
+        "Island", "Seabed", "Wasteland", "Badlands", "Cave", "Lake",
         "Snowy Forest", "Meadow", "Forest", "Construction Site", "Laboratory",
-        "Factory", "Power Plant", "Slum", "Metropolis", "Plains", "Grassy Field", 
+        "Factory", "Power Plant", "Slum", "Metropolis", "Plains", "Grassy Field",
         "Tall Grass", "Swamp", "Graveyard", "Abyss", "Town"
     ]
     G.add_nodes_from(biomas)
-    
+   
     edges = [
     ("Town", "Plains"),
     ("Plains", "Grassy Field"), ("Plains", "Lake"), ("Plains", "Metropolis"),
@@ -91,17 +91,17 @@ G, biomas = cargar_grafo()
 # Sidebar con controles
 with st.sidebar:
     st.header("Configuración de Ruta")
-    
+   
     # Modo de selección
     modo_seleccion = st.radio(
         "Tipo de destino:",
         ["Único bioma", "Múltiples biomas"],
         index=0
     )
-    
+   
     # Bioma de inicio (siempre único)
     inicio = st.selectbox("Bioma de inicio:", biomas, index=biomas.index("Town"))
-    
+   
     # Selector de destino según modo
     if modo_seleccion == "Único bioma":
         destino = st.selectbox("Bioma de destino:", biomas, index=biomas.index("Town"))
@@ -114,7 +114,7 @@ with st.sidebar:
             with cols[i % 3]:
                 if st.checkbox(bioma, key=f"bioma_{bioma}"):
                     destinos.append(bioma)
-    
+   
     # Configuración de stages
     st.subheader("Configuración de Stages")
     stage_actual = st.number_input("Stage actual:", min_value=1, value=1)
@@ -137,10 +137,10 @@ def calcular_rutas(inicio, destinos, stage_actual, stage_primer_lider):
             else:
                 camino = nx.shortest_path(G, source=inicio, target=destino)
                 saltos = len(camino) - 1
-            
+           
             stage_al_llegar = stage_actual + saltos
             lider = (stage_al_llegar >= stage_primer_lider) and ((stage_al_llegar - stage_primer_lider) % 3 == 0)
-            
+           
             resultados.append({
                 "destino": destino,
                 "saltos": saltos,
@@ -160,10 +160,10 @@ if st.button("Calcular Rutas", type="primary"):
         st.warning("¡Selecciona al menos un bioma de destino!")
     else:
         resultados = calcular_rutas(inicio, destinos, stage_actual, stage_primer_lider)
-        
+       
         # Mostrar resultados en pestañas
         tabs = st.tabs([f"Ruta a {res['destino']}" for res in resultados])
-        
+       
         for tab, res in zip(tabs, resultados):
             with tab:
                 if "error" in res:
@@ -175,23 +175,22 @@ if st.button("Calcular Rutas", type="primary"):
                         st.metric("Saltos necesarios", res["saltos"])
                     with col2:
                         st.metric("Líder al llegar", "✅ Sí" if res["lider"] else "❌ No")
-                    
+                   
                     st.subheader("Camino:")
                     st.code(res["camino"])
-                    
+                   
                     # Visualización gráfica (opcional)
                     with st.expander("Ver mapa de ruta"):
                         fig, ax = plt.subplots(figsize=(10, 8))
                         pos = nx.spring_layout(G, seed=42)
-
                         nx.draw(G, pos, with_labels=True, ax=ax, node_size=300, font_size=6)
-                        
+                       
                         if "camino" in res:
                             camino_nodos = res["camino"].split(" → ")
                             edge_list = [(camino_nodos[i], camino_nodos[i+1]) for i in range(len(camino_nodos)-1)]
                             nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color='r', width=2)
                             nx.draw_networkx_nodes(G, pos, nodelist=camino_nodos, node_color='r', node_size=500)
-                        
+                       
                         st.pyplot(fig)
 
 # Instrucciones
@@ -202,7 +201,7 @@ with st.expander("ℹ️ Instrucciones"):
     2. Elige entre ruta única o múltiples destinos
     3. Configura los stages
     4. Haz clic en "Calcular Rutas"
-    
+   
     **Modo múltiples biomas:**
     - Selecciona varios biomas con los checkboxes
     - Los resultados se mostrarán en pestañas separadas
