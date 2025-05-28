@@ -66,7 +66,7 @@ def cargar_grafo():
     ("Lake", "Meadow"),
     ("Wasteland", "Badlands"),
     ("Space", "Mountain")
-     ]
+    ]
 
 # Añadir aristas al grafo
     G.add_edges_from(edges)
