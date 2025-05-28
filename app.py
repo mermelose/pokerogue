@@ -207,7 +207,7 @@ if st.button("Calcular Ruta"):
             if len(camino) > 1:
                 edge_list = [(camino[i], camino[i+1]) for i in range(len(camino)-1)]
                 nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color='r', width=2)
-                nx.draw_networkx_nodes(G, pos, nodelist=camino, node_color='r', node_size=700)
+                nx.draw_networkx_nodes(G, pos, nodelist=camino, node_color='r', node_size=1000)
             
             st.pyplot(fig)
 
