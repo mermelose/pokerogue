@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Configuración de la página
-st.set_page_config(layout="wide", page_title="Pokerogue - Rutas")
+st.set_page_config(layout="wide", page_title="Pokerogue - Multi-Ruta")
 
 # Función para cargar el grafo (la misma que tenías)
 def cargar_grafo():
