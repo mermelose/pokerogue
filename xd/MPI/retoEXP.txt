@@ -1,0 +1,30 @@
+Explicación del código:
+Inicialización de MPI:
+
+MPI_Init inicializa el entorno de MPI.
+
+MPI_Comm_rank obtiene el identificador del proceso actual.
+
+MPI_Comm_size obtiene el número total de procesos disponibles.
+
+División del trabajo:
+
+El trabajo se distribuye entre los procesos. Cada proceso calcula una parte de la serie.
+
+Cada proceso tiene un rango de índices que le corresponde, calculado a partir del número total de elementos N dividido por el número de procesos.
+
+Cálculo de la suma parcial:
+
+Cada proceso calcula una suma parcial basada en la función matemática definida (en este caso, 1/sqrt(i+1)).
+
+Medición de tiempo:
+
+Usamos std::chrono::high_resolution_clock::now() para medir el tiempo de ejecución de cada proceso en su parte del cálculo.
+
+Reducción de resultados:
+
+MPI_Reduce combina las sumas parciales de todos los procesos en el proceso 0. La operación MPI_SUM se utiliza para sumar los resultados de todos los procesos.
+
+Impresión de resultados:
+
+El proceso 0 es el único que imprime la suma total combinada.
