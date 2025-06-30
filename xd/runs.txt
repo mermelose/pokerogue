@@ -1,0 +1,19 @@
+runs = get_experiment_runs("exp-101-salud-estimar-diabetes")
+for run in runs:
+    print(f"Run ID: {run['run_id']}")
+    print(f"Run Name: {run['run_name']}")     
+    print(f"R2 score: {run['metrics'].get('r2_score')}")
+    print(f"Parameters: {run['params']}")
+
+
+runs = get_experiment_runs(
+     experiment_name="exp-101-salud-estimar-diabetes",
+     filter_string="metrics.r2_score > 0.4",
+     max_results=3,
+     order_by=["metrics.rmse DESC"])
+for run in runs:
+    print(f"Run ID: {run['run_id']}")
+    print(f"Run Name: {run['run_name']}")     
+    print(f"R2 score: {run['metrics'].get('r2_score')}")
+    print(f"rmse: {run['metrics'].get('rmse')}")
+    print(f"Parameters: {run['params']}")
