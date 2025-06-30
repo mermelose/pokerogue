@@ -1,0 +1,18 @@
+1.	(8 pts) Implemente un programa en lenguaje C++ que, utilizando directivas OpenMP, realice lo siguiente:
+Tareas principales:
+●	Inicialice una matriz cuadrada de N x N (100 x 100) elementos, donde cada elemento matriz[i][j] sea igual al valor (i + j) * 3.
+●	Paralelice el análisis de la matriz empleando 6 hilos (utilizar el número máximo de hilos en caso sea menor a 6), de tal forma que se procese cada fila de manera paralela.
+Resultados a mostrar:
+Al final, el programa debe mostrar por consola:
+●	La suma de los elementos de la diagonal principal (donde i == j).
+●	La suma de los elementos de la diagonal secundaria (donde i + j == N-1).
+●	El valor máximo encontrado en toda la matriz.
+●	El valor mínimo encontrado en toda la matriz.
+●	La suma total de todos los elementos de la matriz.
+Indicaciones:
+●	Utilizar la directiva #pragma omp parallel para definir la región paralela.
+●	Dentro de la región paralela, utilizar la directiva #pragma omp for para distribuir las iteraciones del ciclo for entre los hilos.
+●	Definir variables locales y globales usando private y shared apropiadamente.
+●	Asegurar que se eviten las condiciones de carrera en las operaciones de suma y comparación mediante secciones críticas (#pragma omp critical).
+●	Para encontrar máximo y mínimo, considerar el uso de variables locales que luego se comparen en sección crítica.
+●	Mostrar los resultados por consola con formato claro y legible.
