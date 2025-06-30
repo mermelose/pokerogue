@@ -1,0 +1,113 @@
+import mlflow
+import mlflow.sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_diabetes
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import matplotlib.pyplot as plt
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
+
+# Set the Tracking Server URI
+mlflow.set_tracking_uri(uri="http://localhost:5000")
+
+experiment_name = "exp-101-salud-estimar-diabetes"
+run_name = "run-RFR-v1"
+mlflow.create_experiment(experiment_name)
+experiment = mlflow.get_experiment_by_name(experiment_name)
+
+# Set the experiment id
+mlflow.set_experiment(experiment_id=experiment.experiment_id)
+
+# Disable autolog
+mlflow.autolog(disable=True)
+
+# Load data
+db = load_diabetes()
+X_train, X_test, y_train, y_test = train_test_split(db.data, db.target, random_state=42)
+
+with mlflow.start_run(run_name=run_name, log_system_metrics=True):
+    # Create and train models
+    rf = RandomForestRegressor(n_estimators=100, max_depth=6, max_features=3, random_state=42)
+    rf.fit(X_train, y_train)
+    
+    # Use the model to make predictions on the test dataset
+    predictions = rf.predict(X_test)
+    
+    # Calculate metrics
+    mse = mean_squared_error(y_test, predictions)
+    mae = mean_absolute_error(y_test, predictions)
+    r2 = r2_score(y_test, predictions)
+    rmse = np.sqrt(mse)
+    
+    # Log parameters
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("max_depth", 6)
+    mlflow.log_param("max_features", 3)
+    mlflow.log_param("random_state", 42)
+    
+    # Log metrics
+    mlflow.log_metric("mse", mse)
+    mlflow.log_metric("mae", mae)
+    mlflow.log_metric("r2_score", r2)
+    mlflow.log_metric("rmse", rmse)
+
+    # Log the model with signature and input example
+    from mlflow.models.signature import infer_signature
+    signature = infer_signature(X_train, predictions)
+    input_example = X_train[:5]
+
+    # Define registered model name
+    registered_model_name = "diabetes-RF-modelo"
+    
+    # Log the model
+    model_info = mlflow.sklearn.log_model(
+        rf, 
+        name="model-RF",
+        signature=signature,
+        input_example=input_example,
+        registered_model_name=registered_model_name
+    )
+
+    print(f"Model registered as: {registered_model_name}")
+    print(f"Model URI: {model_info.model_uri}")
+    print(f"Model version: {model_info.registered_model_version}")
+    
+    # Create and log plot as artifact
+    plt.figure(figsize=(10, 6))
+    
+    # Create subplots
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+    
+    # Plot 1: Actual vs Predicted
+    ax1.scatter(y_test, predictions, alpha=0.7)
+    ax1.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+    ax1.set_xlabel('Actual Values')
+    ax1.set_ylabel('Predicted Values')
+    ax1.set_title(f'Actual vs Predicted\nR² = {r2:.3f}')
+    ax1.grid(True, alpha=0.3)
+    
+    # Plot 2: Residuals
+    residuals = y_test - predictions
+    ax2.scatter(predictions, residuals, alpha=0.7)
+    ax2.axhline(y=0, color='r', linestyle='--')
+    ax2.set_xlabel('Predicted Values')
+    ax2.set_ylabel('Residuals')
+    ax2.set_title('Residual Plot')
+    ax2.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    
+    # Save and log the plot as artifact
+    plot_path = "model_performance_plots.png"
+    plt.savefig(plot_path, dpi=300, bbox_inches='tight')
+    mlflow.log_artifact(plot_path)
+    
+    plt.close()  # Close the plot to free memory
+    
+    print(f"MSE: {mse:.3f}")
+    print(f"MAE: {mae:.3f}")
+    print(f"RMSE: {rmse:.3f}")
+    print(f"R² Score: {r2:.3f}")
+    print("Model and artifacts logged successfully!")
