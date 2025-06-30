@@ -1,0 +1,42 @@
+import subprocess
+import os
+from datetime import datetime
+
+# Define the paths for the SQLite database and artifact storage
+backend_store_uri = "sqlite:///C:/mlflow/data/mlflow.db"
+artifact_root = "file:///C:/mlflow/data/artifacts"
+
+# Create logs directory if it doesn't exist
+log_dir = "C:/mlflow/logs"
+os.makedirs(log_dir, exist_ok=True)
+
+# Create log file with timestamp
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+log_file = os.path.join(log_dir, f"mlflow_server_{timestamp}.log")
+
+# Define the command to start the MLflow server
+command = [
+    "mlflow", "server",
+    "--backend-store-uri", backend_store_uri,
+    "--default-artifact-root", artifact_root,
+    "--host", "0.0.0.0",
+    "--port", "5000"
+]
+
+print(f"Starting MLflow server...")
+print(f"Logs will be saved to: {log_file}")
+
+# Run the command with output redirection
+with open(log_file, 'w') as f:
+    process = subprocess.Popen(
+        command,
+        stdout=f,
+        stderr=subprocess.STDOUT,
+        universal_newlines=True
+    )
+    
+    print(f"MLflow server started with PID: {process.pid}")
+    print("Server is running in the background...")
+    
+    # Optionally wait for the process (remove this if you want it to run completely in background)
+    # process.wait()
