@@ -1,0 +1,209 @@
+LINUX
+# Imprime en consola la ruta actual
+!pwd
+# Lista archivos y directorios en la ruta actual
+!ls
+# Lista archivos y directorios de forma detallada en la ruta actual
+!ls -lha (l lista, h human, a all)
+#Crear archivo
+!touch archivo.txt
+#sobrescribir en un archivo
+!echo "Clases de HPC" > archivo.txt
+#agregar un archivo
+!echo "Clases de HPC, línea 2" >> archivo.txt
+#print
+!cat archivo.txt
+# Crea un directorio
+!mkdir clase12
+# Crear directorios de forma recursiva
+!mkdir -p clase12_up/{t1/{t11,t12},t2,t3}
+# Retroce un nivel con ".."
+!cd ..
+#Ver recursos computacionales en tiempo real
+!top
+#ver ram
+!free -h
+#ver gpu
+!nvidia-smi
+#copiar archivo
+!cp archivo.txt /content/clase12/archivo_copy.txt
+#mover archivo
+!mv archivo.txt /content/clase12/archivo_moved.txt
+#contar archivo
+!ls /content/sample_data | wc -l
+#descargar
+!curl -O https://raw.githubusercontent.com/octocat/Hello-World/master/README
+
+
+GIT
+
+
+git clone repositorio1.git
+git clone repositorio2.git
+cp * ../repositorio2/
+cd ..
+cd repositorio2
+ls
+cd ..
+
+git status
+git add .
+git status
+git commit -m “comentario”
+
+git config –global user.email “mermelose”
+git commit -m “comentario”
+git push
+
+
+
+
+Docker
+
+# Ver contenedores en ejecución
+docker ps
+# Ver todos los contenedores (activos e inactivos)
+docker ps -a
+
+-DOCKER CON WEB APP FOR CONTAINER
+
+Dockerfile - app.py - requirements.txt - README.md
+-crear container registry: strlitapp888.azurecr.io
+-settings - access key - admin user ✅- copiar username y pass
+docker build -t strlitapp888.azurecr.io/nombre:latest .    <-   PUNTITO
+docker images   
+docker login strlitapp888.azurecr.io   -loguear con usr y pass
+docker push nombreimagen:latest    pushear a container registry
+
+-CREAR WEB APP FOR CONTAINER 
+container - azure container registry - admin credentials - imagen subida a tu CR(en este caso “nombre”)
+
+——————————————————
+
+
+
+-DOCKER SOLO CON DOCKER
+git clone https://github.com/UP-HPC/repo-app-test.git
+docker build -t st-app .         <—PUNTITO
+docker run -d -p 8501:8501 --name mi-st-app st-ap
+docker logs mi-streamlit-app
+
+
+
+
+
+
+TERRAFORM
+#DESCARGAR AZURE
+!curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#INSTALACIÓN DEL TERRAFORM
+%%writefile install_terr.sh
+#!/bin/bash
+wget https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip
+unzip terraform_1.6.0_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+
+#PERMISOS PARA EJECUTAR BASH
+!chmod +x ./install_terr.sh
+#EJECUTAR BASH
+!./install_terr.sh
+
+#VER SI ESTÁ INSTALADO
+!terraform --version
+
+#INICIAR SESIÓN AZURE
+!az login --use-device-code
+
+#CREAR DIRECTORIO OCULTO PARA LAS CLAVES
+mkdir -p ~/.ssh
+
+#CREAR CLAVE PÚBLICA Y PRIVADA DENTRO DEL DIR OCULTO
+!ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa
+#La copia al dir publico de collab xd(no es seguro)
+!cp ~/.ssh/id_rsa /content/
+
+# equisde
+
+%%writefile main.tf dentro se crea recurso con id_rsa.pub como clave,
+para que puedas usar id_rsa como clave privada para conectarte a vm
+
+- Descarga el proveedor de Azure
+- Crea el directorio .terraform
+- Crea el archivo terraform.lock.hcl
+!terraform init
+!terraform validate   #valida el .tf
+!terraform plan  #muestra que se va crear
+!terraform apply -auto-approve  #aplica y auto aprueba
+!terraform output vm_info  #info vm creadaa
+!terraform output connection_info   #ver ip(te va dar otro comando)
+#conexion desde ssh a vm (con private key)
+ssh -i /path/to/private_key adminuser@172.191.224.95
+
+
+private key <- id_rsa
+
+
+
+
+!terraform destroy -auto-approve
+
+
+## Comandos útiles
+
+
+Comandos principales de Terraform
+
+
+- terraform init      # Inicializar proyecto
+- terraform validate   # Validar configuración
+- terraform plan      # Ver cambios planificados
+- terraform apply     # Aplicar cambios
+- terraform destroy   # Destruir recursos
+- terraform output    # Ver salidas
+
+
+# Comandos útiles de Azure CLI
+- az login                    # Iniciar sesión
+- az account list            # Listar suscripciones
+- az account show            # Mostrar suscripción actual
+- az vm list                 # Listar VMs
+- az group list              # Listar grupos de recursos
+
+C++
+#include <stdio.h>      // Para operaciones de entrada y salida estándar (printf)
+#include <stdlib.h>     // Para funciones de utilidades generales (malloc, free, etc.)
+#include <ctime>        // Para medir tiempos de ejecución (clock())
+#include <omp.h>        // Para la paralelización con OpenMP y funciones relacionadas
+#include <iostream>     // Para operaciones de entrada/salida en C++ (cout, endl)
+#include <cmath>        // Para funciones matemáticas (sqrt, pow, etc.) si fuera necesario
+
+MP
+
+FOR
+
+#pragma omp parallel num_threads(NUM_THREADS) shared(n)
+{
+    #pragma omp for
+    for (i = 0; i < n; i++)
+        printf("thread %d executes loop iteration %d\n", omp_get_thread_num(), i);
+}
+
+SECTIONS
+
+#pragma omp parallel sections num_threads(NUM_THREADS)
+{
+    #pragma omp section
+    {
+        // Código de la primera sección
+    }
+    #pragma omp section
+    {
+        // Código de la segunda sección
+    }
+    #pragma omp section
+    {
+        // Código de la tercera sección
+    }
+}
+
+
