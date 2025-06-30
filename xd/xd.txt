@@ -1,0 +1,229 @@
+TEORÍA COMPUTACIÓN DE ALTO DESEMPEÑO Y CLOUD COMPUTING
+ 
+Clúster
+Un conjunto de computadoras conectadas que trabajan juntas como si fueran una sola, usado para tareas complejas o de alto rendimiento.
+ 
+Plataformas On-Premise vs Cloud
+●       On-Premise: infraestructura instalada localmente en la empresa.
+●       Cloud: infraestructura ofrecida por un proveedor externo a través de internet.
+Al usar la nube, el proveedor gestiona la infraestructura, pero el usuario es responsable de los datos almacenados, dispositivos que acceden a la nube, cuentas, identidades y accesos.
+ 
+CapEx vs OpEx
+●       CapEx (Gasto de Capital): inversión inicial en infraestructura. On-Premise
+●       OpEx (Gasto Operativo): pago por uso, modelo típico en la nube. Cloud
+ 
+Modelos de Servicio
+●       IaaS (Infrastructure as a Service): Ej. Amazon Web Services, Microsoft Azure.
+●       PaaS (Platform as a Service): Ej. MongoDB Atlas, elasticsearch.
+●       SaaS (Software as a Service): Ej. Google Workspace: Gmail, software listo para usar.
+ 
+MongoDB
+Arquitectura autogestionada basada en clústeres, shards (fragmentación) y réplicas (copias).
+●       Sharding: divide los datos para distribuir la carga.
+●       Replicación: mejora la disponibilidad y tolerancia a fallos.
+ 
+Teorema CAP
+En sistemas distribuidos, sólo se pueden garantizar 2 de estas 3 propiedades al mismo tiempo:
+●       Consistencia (C): todos los nodos ven la misma información.
+●       Disponibilidad (A): siempre hay una respuesta a las solicitudes.
+●       Tolerancia a Particiones (P): el sistema sigue funcionando pese a fallos en la red.
+ 
+Jerarquía: Grupo de Gestión, Suscripción y Grupo de Recursos
+Recursos → Grupo de recursos → Suscripciones → Contenedores / Grupos de administración (se les aplican condiciones de gobernanza)
+ 
+Tipos de despliegue de la nube:
+●       Nube Pública: Infraestructura gestionada por terceros (ej. AWS, Azure, GCP).
+●       Nube Privada: Infraestructura exclusiva para una organización, gestionada interna o externamente.
+●       Nube Híbrida: Combinación de pública y privada, permite mayor flexibilidad y control.
+●       Nube Comunitaria: Compartida entre varias organizaciones con intereses comunes.
+ 
+Niveles de Almacenamiento (Storage Tiers)
+Las nubes ofrecen distintas "capas" o tiers de acceso para optimizar costos:
+●       Hot Tier: Para datos de acceso frecuente, más costoso.
+●       Cool Tier: Para datos de acceso poco frecuente, más barato que Hot.
+●       Archive Tier: Para datos que rara vez se acceden, el más barato, pero más lento de recuperar.
+ 
+Virtualización tradicional vs. Virtualización moderna
+La virtualización permite ejecutar varias máquinas virtuales (VMs) en un solo servidor físico. Esto se opone al enfoque tradicional donde cada aplicación tenía su propio servidor físico.
+ 
+Principios de la Virtualización
+●       Abstracción: Oculta el hardware físico a las VMs, no hay necesidad de preocuparse por los detalles del hardware subyacente.
+●       Aislamiento: Cada VM funciona por separado, evitando que los problemas en una máquina afecten a otras.
+●       Recursos compartidos: CPU, memoria y disco se distribuyen entre las VMs, utilización más eficiente.
+●       Control centralizado: Gestión unificada de VMs, simplificando la administración.
+●       Flexibilidad: Fácil creación, eliminación y migración de VMs.
+●       Ahorro de recursos: Menor necesidad de hardware físico, ahorra recursos y costos.
+●       Mayor disponibilidad: Copias de seguridad y migración en caliente, esto mejora la disponibilidad.
+●       Reducción de costos: Menos hardware, software y personal.
+●       Seguridad: Entornos separados para proteger aplicaciones sensibles.
+ 
+Hypervisor (Hipervisor)
+●       Es el software que permite crear y gestionar VMs en un host físico.
+●       Gestiona recursos como CPU, RAM y almacenamiento para las VMs.
+ 
+Contenedores
+Encapsulan una aplicación y sus dependencias en un solo paquete. A diferencia de las VMs, no requieren un sistema operativo completo, lo que los hace más livianos y rápidos de iniciar.
+●       Más rápidos que las VMs.
+●       Más portables (se pueden mover entre entornos fácilmente).
+●       Aislados, pero comparten el mismo kernel del sistema operativo.
+ 
+Enfoque tradicional VS Virtualización VS Contenedores
+●       Tradicional: simple pero poco eficiente y costoso.
+●       Virtualización: mejora el aislamiento y uso de recursos, pero con sobrecarga.
+●       Contenedores: eficientes y modernos, ideales para DevOps y microservicios, pero con retos de seguridad y gestión.
+ 
+Container Registry
+Es un repositorio central para almacenar y compartir imágenes de contenedores.
+ 
+Kubernetes (k8s)
+Es una plataforma de orquestación de contenedores que automatiza:
+●       El despliegue.
+●       La gestión.
+●       El escalado de aplicaciones en contenedores.
+●       Permite manejar miles de contenedores en múltiples servidores.
+ 
+Git
+●       Sistema de control de versiones distribuido.
+●       Permite registrar los cambios realizados en archivos de forma colaborativa.
+●       Facilita revertir versiones, comparar diferencias, y colaborar en paralelo.
+ 
+GitHub
+●       Plataforma basada en Git para alojar repositorios en la nube.
+●       Facilita el trabajo en equipo con herramientas como:
+○       Pull requests
+○       Issues
+○       Actions (CI/CD)
+○       Wikis y documentación
+ 
+Environments (Entornos)
+Entornos de desarrollo y despliegue:
+●       Development: donde se crean y prueban funciones nuevas.
+●       Testing/Staging: para validar funcionalidades antes del despliegue.
+●       Production: entorno final usado por los usuarios reales.
+ 
+Docker
+●       Plataforma para crear, empaquetar y ejecutar aplicaciones en contenedores.
+●       Los contenedores permiten ejecutar aplicaciones de forma aislada, ligera y portable.
+●       Las imágenes de Docker contienen todo lo necesario para ejecutar una aplicación (código, librerías, dependencias, etc.).
+●       Docker simplifica la distribución de software y asegura que se ejecute igual en cualquier entorno.
+ 
+Linux
+Algunos directorios clave:
+●       /bin – binarios esenciales.
+●       /etc – archivos de configuración.
+●       /home – carpetas personales de los usuarios.
+●       /var – archivos variables, como logs.
+●       /usr – programas y datos de usuario.
+●       /tmp – archivos temporales.
+ 
+Comandos de Linux
+●       ls – listar archivos.
+●       cd – cambiar directorio.
+●       pwd – mostrar ruta actual.
+●       mkdir / rm – crear/eliminar carpetas.
+●       chmod / chown – permisos y propiedad.
+●       docker – comandos para manejar contenedores.
+ 
+DevOps
+●       Es la unión de Desarrollo (Dev) y Operaciones (Ops).
+●       Cultura y conjunto de prácticas para integrar desarrollo y operaciones.
+●       Objetivo: acelerar el ciclo de vida del software y mejorar la calidad.
+●       Promueve:
+○       Automatización
+○       Integración continua
+○       Entrega continua
+○       Colaboración constante
+●       Beneficios:
+○       Despliegues más rápidos
+○       Menos errores en producción
+○       Mejor colaboración entre equipos
+○       Escalabilidad y adaptabilidad
+○       Feedback continuo del cliente
+●       Incluye:
+○       CI/CD, monitoreo, infraestructura como código, feedback continuo
+●       Ejemplo:
+○       Cambiar la cultura de una empresa para entregar soluciones más rápido y con calidad.
+ 
+CI/CD
+●       CI (Integración Continua):
+○       Automatiza la integración del código de todos los desarrolladores.
+●       CD (Entrega y Despliegue Continuo):
+○       Automatiza pruebas, builds y despliegues.
+●       CI/CD:
+○       Conjunto de prácticas de automatización dentro de DevOps.
+○       Automatizar el camino desde el código hasta el usuario final.
+●       Ejemplo:
+○       Usar GitHub Actions para construir y desplegar una aplicación automáticamente
+ 
+Terraform
+Herramienta de Infrastructure as Code (IaC)
+●       Describe QUÉ quieres, no CÓMO hacerlo
+●       Resultado: Infraestructura predecible, escalable y mantenible
+●       Conceptos:
+○       Recursos: componentes de infraestructura (VMs, redes, BBDD)
+○       Providers: Plugins para diferentes servicios cloud
+○       State: archivo que rastrea el estado actual de la infraestructura
+○       Modules: código reutilizable para patrones comunes
+●       Workflow:
+○       Scope → Author → Initialize → Plan → Apply
+●       En DevOps:
+○       Consistencia: misma infraestructura en todos los ambientes
+○       Velocidad: deployment automatizado en minutos
+○       Colaboración: equipos trabajando con el mismo código
+○       Rollback: volver a versiones anteriores fácilmente
+○       Ejemplo uso: gestionar múltiples clouds simultáneamente
+●       En CI/CD:
+○       Push a Git
+○       CI Pipeline
+○       Review
+○       Deploy
+●       Terraform es poderoso pero requiere madurez organizacional.
+●       IaC es Infrastructure as Product, no solo as Code
+●       Terraform democratiza la infraestructura, pero requiere inversión en procesos, cultura y herramientas complementarias para realizarse completamente su potencial.
+ 
+MLOps (Machine Learning Operations)
+Práctica que combina Machine Learning, DevOps y Gestión de datos para automatizar y mejorar el ciclo de vida de los modelos de ML, desde su desarrollo hasta su puesta en producción y monitoreo.
+ 
+¿Por qué el Lakehouse es ideal para ML?
+●       Permite almacenar y procesar datos estructurados y no estructurados.
+●       Soporta herramientas open source como Spark, que trabajan con DataFrames, no solo con SQL.
+●       Los resultados son modelos predictivos, no reportes.
+●       El Lakehouse integra capacidad computacional escalable y almacenamiento flexible para ML cuando extrae nuevos tipos de valor desde imágenes, videos o texto.
+ 
+Problemas con los sistemas tradicionales:
+●       Los Data Warehouses clásicos fueron diseñados para datos tabulares.
+●       Aunque se pueden almacenar como BLOBs o TEXT, esto es:
+○       Ineficiente para grandes volúmenes.
+○       Lento y redundante al copiar datos a bases de datos.
+○       Incompatible con las herramientas open source de ML, que acceden mejor a archivos
+ 
+¿Cómo lo resuelve el Data Lakehouse?
+La porción no estructurada del Data Lakehouse ofrece:
+●       Acceso directo a archivos en diversos formatos y soporte para ELT (Extract, Load, Transform), además de ETL.
+●       Ejecución de librerías de ML directamente sobre los datos.
+●       Escalabilidad en la ejecución de tareas de ML sin tener que exportar los datos a otro entorno.
+ 
+Elasticidad cloud
+●       Capacidad de ajustar dinámicamente recursos de almacenamiento y cómputo según demanda, pagando solo por lo que se usa.
+●       Evita problemas de sobreaprovisionamiento (recursos ociosos) y subaprovisionamiento (falta de recursos).
+●       Ventajas para el Data Lakehouse y Machine Learning:
+○       Permite escalar fácilmente tanto consultas SQL tradicionales como tareas de ML y Deep Learning.
+○       Soporta acceso flexible a datos como archivos y ejecución de herramientas open source (ej.: Python, Spark).
+ 
+MLOps
+Conjunto de prácticas para operacionalizar modelos de Machine Learning: desde su entrenamiento hasta su despliegue, control de versiones, trazabilidad (lineage) y gestión.
+¿Por qué es importante en un Data Lakehouse?
+●       Los modelos se entrenan sobre datos, y es clave rastrear qué datos usó cada versión de modelo (por cumplimiento o control de calidad).
+●       Copiar datasets grandes para cada versión es inviable: el Lakehouse permite versionar sin duplicar datos.
+●       Los modelos deben crearse y ejecutarse donde residen los datos, optimizando rendimiento y facilitando la trazabilidad.
+➔    La arquitectura Data Lakehouse es fundamental para democratizar el Machine Learning empresarial.
+➔    La elasticidad cloud transforma el acceso a recursos especializados de ML.
+➔    MLOps es el puente crítico entre experimentación y operación empresarial.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
