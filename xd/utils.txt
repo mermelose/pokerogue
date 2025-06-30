@@ -1,0 +1,73 @@
+import mlflow
+from mlflow.entities import ViewType
+from typing import List, Optional
+from datetime import datetime
+import pandas as pd
+
+def get_experiment_runs(experiment_name: str,
+                       filter_string: Optional[str] = None,
+                       max_results: Optional[int] = None,
+                       order_by: Optional[List[str]] = None) -> List[dict]:
+    """
+    Get all runs for a specific MLflow experiment by name.
+    
+    Args:
+        experiment_name (str): Name of the experiment
+        filter_string (str, optional): Filter string for the runs (MLflow search syntax)
+        max_results (int, optional): Maximum number of runs to return
+        order_by (List[str], optional): List of columns to order by (e.g., ["metrics.accuracy DESC"])
+    
+    Returns:
+        List[dict]: List of run information dictionaries
+        
+    Raises:
+        mlflow.exceptions.MlflowException: If experiment is not found
+    """
+    # Set the Tracking Server URI
+    mlflow.set_tracking_uri(uri="http://localhost:5000")
+    
+    # Get experiment by name
+    experiment = mlflow.get_experiment_by_name(experiment_name)
+    if experiment is None:
+        #raise ValueError(f"Experiment '{experiment_name}' not found")
+        return 0  # Return 0 if the experiment does not exist
+        
+    # Set up search criteria
+    search_kwargs = {
+        "experiment_ids": [experiment.experiment_id],
+        "run_view_type": ViewType.ACTIVE_ONLY,
+    }
+    
+    # Add optional parameters if provided
+    if filter_string:
+        search_kwargs["filter_string"] = filter_string
+    if max_results:
+        search_kwargs["max_results"] = max_results
+    if order_by:
+        search_kwargs["order_by"] = order_by
+
+    # Search for runs
+    runs = mlflow.search_runs(**search_kwargs)
+    
+    # Convert runs to list of dictionaries with key information
+    run_list = []
+    for _, run in runs.iterrows():
+        # Get run name from tags columns
+        run_name = None
+        run_name_col = 'tags.mlflow.runName'
+        if run_name_col in runs.columns:
+            run_name = run[run_name_col]
+        
+        run_info = {
+            'run_id': run.run_id,
+            'run_name': run_name if run_name else 'Unnamed',
+            'status': run.status,
+            'start_time': run.start_time.to_pydatetime() if isinstance(run.start_time, pd.Timestamp) else None,
+            'end_time': run.end_time.to_pydatetime() if isinstance(run.end_time, pd.Timestamp) else None,
+            'metrics': {col.split('.')[1]: run[col] for col in runs.columns if col.startswith('metrics.')},
+            'params': {col.split('.')[1]: run[col] for col in runs.columns if col.startswith('params.')},
+            'tags': {col.split('.')[1]: run[col] for col in runs.columns if col.startswith('tags.')}
+        }
+        run_list.append(run_info)
+        
+    return run_list
