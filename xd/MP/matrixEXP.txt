@@ -1,0 +1,31 @@
+Explicación:
+Inicialización de la matriz:
+
+Utilizamos un ciclo for anidado para llenar la matriz de tamaño N x N con el valor (i + j) * 3.
+
+La directiva #pragma omp parallel for collapse(2) paraleliza el bucle anidado, dividiendo las iteraciones de forma equitativa entre los hilos disponibles. En este caso, el número máximo de hilos es 6.
+
+Procesamiento paralelo:
+
+Utilizamos la directiva #pragma omp parallel for para paralelizar el procesamiento de la matriz.
+
+Para las operaciones de suma, utilizamos reduction, que asegura que las sumas (de las diagonales, total de elementos, máximo y mínimo) se hagan de manera segura entre los hilos.
+
+reduction(+:suma_diagonal_principal, suma_diagonal_secundaria, suma_total) para las sumas.
+
+reduction(min:min_val) y reduction(max:max_val) para obtener los valores mínimo y máximo.
+
+Evitar condiciones de carrera:
+
+Usamos la cláusula reduction para evitar condiciones de carrera en las sumas y comparaciones de máximo y mínimo.
+
+Resultados:
+
+Al finalizar el procesamiento, los resultados de las sumas de las diagonales, el valor máximo, el valor mínimo y la suma total de los elementos se imprimen en la consola de manera clara.
+
+Notas adicionales:
+En este ejemplo, el tamaño de la matriz se establece como 100 x 100, pero puedes modificar el valor de N para cambiar el tamaño de la matriz.
+
+La directiva collapse(2) en la inicialización de la matriz permite que dos ciclos for (uno para las filas y otro para las columnas) sean paralelizados conjuntamente.
+
+Este código aprovecha OpenMP para realizar las operaciones en paralelo y evitar problemas de sincronización al usar reduction, asegurando la correcta ejecución en entornos multihilo.
