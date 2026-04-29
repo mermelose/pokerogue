@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Configuración de la página
-st.set_page_config(layout="wide", page_title="Pokerogue - Multi-Ruta")
+st.set_page_config(layout="wide", page_title="Pokerogue Shortest Route Calculator")
 
 # Función para cargar el grafo (la misma que tenías)
 def cargar_grafo():
@@ -90,24 +90,24 @@ G, biomas = cargar_grafo()
 
 # Sidebar con controles
 with st.sidebar:
-    st.header("Configuración de Ruta")
+    st.header("Route Configuration")
    
     # Modo de selección
     modo_seleccion = st.radio(
         "Tipo de destino:",
-        ["Único bioma", "Múltiples biomas"],
+        ["Single biome", "Multiple biomes"],
         index=0
     )
    
     # Bioma de inicio (siempre único)
-    inicio = st.selectbox("Bioma de inicio:", biomas, index=biomas.index("Town"))
+    inicio = st.selectbox("Start Biome:", biomas, index=biomas.index("Town"))
    
     # Selector de destino según modo
-    if modo_seleccion == "Único bioma":
-        destino = st.selectbox("Bioma de destino:", biomas, index=biomas.index("Town"))
+    if modo_seleccion == "Single biome":
+        destino = st.selectbox("Target Biome:", biomas, index=biomas.index("Town"))
         destinos = [destino]
     else:
-        st.markdown("**Selecciona varios biomas:**")
+        st.markdown("**Select one or more target biomes:**")
         destinos = []
         cols = st.columns(3)
         for i, bioma in enumerate(biomas):
@@ -116,10 +116,10 @@ with st.sidebar:
                     destinos.append(bioma)
    
     # Configuración de stages
-    st.subheader("Configuración de Stages")
-    stage_actual = st.number_input("Stage actual:", min_value=1, value=1)
+    st.subheader("Stage Config")
+    stage_actual = st.number_input("Current Stage(Stage/10):", min_value=1, value=1)
     stage_primer_lider = st.radio(
-        "Stage del primer líder:",
+        "Stage with first Gym Leader:",
         [2, 3],
         index=0,
         horizontal=True
@@ -142,27 +142,27 @@ def calcular_rutas(inicio, destinos, stage_actual, stage_primer_lider):
             lider = (stage_al_llegar >= stage_primer_lider) and ((stage_al_llegar - stage_primer_lider) % 3 == 0)
            
             resultados.append({
-                "destino": destino,
-                "saltos": saltos,
-                "camino": " → ".join(camino),
-                "lider": lider
+                "target": destino,
+                "steps": saltos,
+                "path": " → ".join(camino),
+                "leader": lider
             })
         except (nx.NetworkXNoPath, nx.NetworkXNoCycle):
             resultados.append({
-                "destino": destino,
-                "error": f"No hay ruta a {destino}"
+                "target": destino,
+                "error": f"No route found to {destino}"
             })
     return resultados
 
 # Botón de cálculo
-if st.button("Calcular Rutas", type="primary"):
+if st.button("Calculate Routes", type="primary"):
     if not destinos:
-        st.warning("¡Selecciona al menos un bioma de destino!")
+        st.warning("¡Select at least one target biome!")
     else:
         resultados = calcular_rutas(inicio, destinos, stage_actual, stage_primer_lider)
        
         # Mostrar resultados en pestañas
-        tabs = st.tabs([f"Ruta a {res['destino']}" for res in resultados])
+        tabs = st.tabs([f"Route to {res['destino']}" for res in resultados])
        
         for tab, res in zip(tabs, resultados):
             with tab:
@@ -171,16 +171,16 @@ if st.button("Calcular Rutas", type="primary"):
                 else:
                     col1, col2 = st.columns(2)
                     with col1:
-                        st.metric("Bioma destino", res["destino"])
-                        st.metric("Saltos necesarios", res["saltos"])
+                        st.metric("Target Biome", res["destino"])
+                        st.metric("Steps needed", res["saltos"])
                     with col2:
-                        st.metric("Líder al llegar", "✅ Sí" if res["lider"] else "❌ No")
+                        st.metric("Is the boss stage a Gym Leader?", "✅ Sí" if res["lider"] else "❌ No")
                    
-                    st.subheader("Camino:")
+                    st.subheader("Route:")
                     st.code(res["camino"])
                    
                     # Visualización gráfica (opcional)
-                    with st.expander("Ver mapa de ruta"):
+                    with st.expander("See route map"):
                         fig, ax = plt.subplots(figsize=(10, 8))
                         pos = nx.spring_layout(G, seed=42)
                         nx.draw(G, pos, with_labels=True, ax=ax, node_size=300, font_size=6)
@@ -193,16 +193,16 @@ if st.button("Calcular Rutas", type="primary"):
                        
                         st.pyplot(fig)
 
-# Instrucciones
-with st.expander("ℹ️ Instrucciones"):
+# Instructions
+with st.expander("ℹ️ Instructions"):
     st.markdown("""
-    **Cómo usar:**
-    1. Selecciona el bioma de inicio
-    2. Elige entre ruta única o múltiples destinos
-    3. Configura los stages
-    4. Haz clic en "Calcular Rutas"
+    **How to use:**
+    1. Select the start biome
+    2. Choose between single or multiple destinations
+    3. Set the stages
+    4. Click "Calculate Routes"
    
-    **Modo múltiples biomas:**
-    - Selecciona varios biomas con los checkboxes
-    - Los resultados se mostrarán en pestañas separadas
+    **Multiple biomes mode:**
+    - Select several biomes using the checkboxes
+    - Results will appear in separate tabs
     """)
