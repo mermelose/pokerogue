@@ -94,7 +94,7 @@ with st.sidebar:
    
     # Modo de selección
     modo_seleccion = st.radio(
-        "Tipo de destino:",
+        "Target Search Mode:",
         ["Single biome", "Multiple biomes"],
         index=0
     )
