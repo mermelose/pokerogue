@@ -171,7 +171,7 @@ if st.button("Calculate Routes", type="primary"):
                 else:
                     col1, col2 = st.columns(2)
                     with col1:
-                        st.metric("Target Biome", res["destino"])
+                        st.metric("Target Biome", res["target"])
                         st.metric("Steps needed", res["saltos"])
                     with col2:
                         st.metric("Is the boss stage a Gym Leader?", "✅ Sí" if res["lider"] else "❌ No")
