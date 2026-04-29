@@ -172,12 +172,12 @@ if st.button("Calculate Routes", type="primary"):
                     col1, col2 = st.columns(2)
                     with col1:
                         st.metric("Target Biome", res["target"])
-                        st.metric("Steps needed", res["saltos"])
+                        st.metric("Steps needed", res["steps"])
                     with col2:
                         st.metric("Is the boss stage a Gym Leader?", "✅ Sí" if res["lider"] else "❌ No")
                    
                     st.subheader("Route:")
-                    st.code(res["camino"])
+                    st.code(res["path"])
                    
                     # Visualización gráfica (opcional)
                     with st.expander("See route map"):
@@ -185,8 +185,8 @@ if st.button("Calculate Routes", type="primary"):
                         pos = nx.spring_layout(G, seed=42)
                         nx.draw(G, pos, with_labels=True, ax=ax, node_size=300, font_size=6)
                        
-                        if "camino" in res:
-                            camino_nodos = res["camino"].split(" → ")
+                        if "path" in res:
+                            camino_nodos = res["path"].split(" → ")
                             edge_list = [(camino_nodos[i], camino_nodos[i+1]) for i in range(len(camino_nodos)-1)]
                             nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color='r', width=2)
                             nx.draw_networkx_nodes(G, pos, nodelist=camino_nodos, node_color='r', node_size=500)
