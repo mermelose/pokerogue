@@ -162,7 +162,7 @@ if st.button("Calculate Routes", type="primary"):
         resultados = calcular_rutas(inicio, destinos, stage_actual, stage_primer_lider)
        
         # Mostrar resultados en pestañas
-        tabs = st.tabs([f"Route to {res['destino']}" for res in resultados])
+        tabs = st.tabs([f"Route to {res['target']}" for res in resultados])
        
         for tab, res in zip(tabs, resultados):
             with tab:
